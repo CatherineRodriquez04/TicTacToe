@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        /* Add your CSS styles here */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 2px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div class="board" id="board">
+        <!-- This is where the game board will be generated dynamically -->
+    </div>
+    <script>
+        // JavaScript code goes here
+        // You can make AJAX requests to the Flask backend to handle user interactions
+
+        // Function to handle user clicks on the board cells
+        function handleCellClick(position) {
+            // Make an AJAX request to the Flask backend to handle the move
+            fetch('/play', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `position=${position}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the HTML display based on the response data
+                // For example, update the game board
+                updateBoard(data.board);
+                // Check if game is over and display winner message if applicable
+                if (data.game_over) {
+                    if (data.winner) {
+                        alert(`Winner: ${data.winner}`);
+                    } else {
+                        alert('It\'s a draw!');
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to generate the game board HTML
+        function generateBoard() {
+            const boardElement = document.getElementById('board');
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.textContent = '';  // You can initialize it with empty text or 'X'/'O'
+                cell.dataset.position = i; // Set dataset attribute for position
+                cell.addEventListener('click', () => handleCellClick(i));
+                boardElement.appendChild(cell);
+            }
+        }
+
+        // Function to update the game board based on the server response
+        function updateBoard(board) {
+            const cells = document.querySelectorAll('.cell');
+            for (let i = 0; i < cells.length; i++) {
+                cells[i].textContent = board[i];
+            }
+        }
+
+        // Call the generateBoard function to initialize the game board
+        generateBoard();
+    </script>
+</body>
+</html>

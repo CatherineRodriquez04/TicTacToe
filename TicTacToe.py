@@ -1,5 +1,5 @@
 #CSC 4444 Final Project
-#Catherine Rodriquez & Shalvi Dalal
+#Catherine Rodriquez and Shalvi Dalal
 
 import time
 class TicTacToe:
@@ -74,7 +74,10 @@ class TicTacToe:
             best_move = None
             #evaluates each move for best board state
             for move in game.available_moves():
-                game.make_move(move, game.player2)
+                if (game.ai == 1):
+                    game.make_move(move, game.player1)
+                else:
+                    game.make_move(move, game.player2)
                 eval, _ = game.minimax_alpha_beta(depth - 1, alpha, beta, False)
                 game.undo_move(move)
                 if eval > max_eval:
@@ -103,19 +106,20 @@ class TicTacToe:
 
     #ai makes move based on minimax algorithm
     def play_ai(game):
-        if (game.ai == 1):
-            _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
-            print(f"{game.player1Name} plays at position: ", best_move)
-            game.make_move(best_move, game.player1)
-            print()
-            game.print_board()
-            _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
-            print(f"{game.player2Name} plays at position:", best_move)
-            game.make_move(best_move, game.player2)
-        else:
-            _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
-            print("AI plays at position:", best_move)
-            game.make_move(best_move, game.player2)
+        _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
+        print("AI plays at position:", best_move)
+        game.make_move(best_move, game.player2)
+    
+    #ai against ai
+    def play_ai1_strategy(game):
+        _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
+        print(f"{game.player1Name} plays at position:", best_move)
+        game.make_move(best_move, game.player1)
+
+    def play_ai2_strategy(game):
+        _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
+        print(f"{game.player2Name} plays at position:", best_move)
+        game.make_move(best_move, game.player2)
         
         
 #creates a new instance of TicTacToe   
@@ -125,11 +129,12 @@ print("You can select between 3 game mode options\n\t1. Two Player\n\t2. Play Ag
 option = True
 continue_game = True
 while continue_game:
+    option = True
     while option:
         game_option = int(input("Please select how you would like to play(1-4): "))
         #two player game
         if (game_option == 1):
-            game.ai = int(game.ai - 1) #placeholder
+            game.ai = 0 #placeholder
             game.player1Name = input("Enter Player1 Name: ")
             game.player2Name = input("Enter Player2 Name: ")
             player_choice = input(f"{game.player1Name} please choose X or O: ").upper()
@@ -152,7 +157,7 @@ while continue_game:
             option = False
         #game against ai
         elif (game_option == 2):
-            game.ai = int(game.ai - 1) #placeholder
+            game.ai = 0 #placeholder
             game.player1Name = input("Enter Player Name: ")
             game.player2Name = "AI"
             # Prompt the player to choose X or O
@@ -173,7 +178,6 @@ while continue_game:
             option = False
         #ai against ai
         elif (game_option == 3):
-            game.ai = 1 #placeholder
             game.player1Name = "AI-1"
             game.player1 = 'X'
             game.player2Name = "AI-2"
@@ -182,17 +186,26 @@ while continue_game:
             second_position = int(input("Please enter starting position for AI-2 (0-8): "))
             print()
             game.make_move(first_position, game.player1)
-            game.print_board()
             print(f"{game.player1Name} starts at position {first_position}")
+            game.print_board()
+            print()
             time.sleep(1)
             game.make_move(second_position, game.player2)
-            game.print_board()
             print(f"{game.player2Name} starts at position {second_position}")
+            game.print_board()
+            print()
+            
             time.sleep(1)
             while not game.game_over():  
+                game.ai = 0 #placeholder
+                game.play_ai1_strategy()
                 game.print_board()
-                game.play_ai()
                 time.sleep(1) #delay between moves
+                if not game.game_over():
+                    game.ai = 1 #placeholder
+                    game.play_ai2_strategy()
+                    game.print_board()
+                    time.sleep(1) #delay between moves
                 print()
             option = False
         #see board positions
