@@ -223,6 +223,7 @@ while continue_game:
             print("Invalid input. PLease enter a mode option 1-4")
             
     #print the final state of the board
+    print("End Result:")
     game.print_board()
 
     #determine the winner and print the result
