@@ -6,7 +6,7 @@ class TicTacToe:
     def __init__(game):
         game.board = [' ']*9 #3x3 board
         game.win_combo = [ 
-            (0, 1, 2),(3, 4, 5), (6, 7, 8),  # rows
+            (0, 1, 2),(3, 4, 5), (6, 7, 8),   # rows
             (0, 3, 6), (1, 4, 7), (2, 5, 8),  # columns
             (0, 4, 8), (2, 4, 6)              # diagonals
         ]
@@ -124,7 +124,7 @@ class TicTacToe:
         
 #creates a new instance of TicTacToe   
 game = TicTacToe()
-print("\nWelcome to TicTacToe!")
+print("\n❌⭕ Welcome to TicTacToe! ❌⭕")
 print("You can select between 3 game mode options\n\t1. Two Player\n\t2. Play Against Ai\n\t3. Ai Against Ai\n\t4. See Board Positions")
 option = True
 continue_game = True
@@ -146,12 +146,30 @@ while continue_game:
                 game.player2 = 'X'
             while not game.game_over():  
                 game.print_board()
-                player_move = int(input(f"{game.player1Name} position (0-8): "))
+                correct_input = True
+                available_moves = game.available_moves()
+                while correct_input:
+                    player_move = int(input(f"{game.player1Name} position (0-8): "))
+                    if(player_move >= 9):
+                        print(f"{player_move} position does not exist.")
+                    elif(player_move not in available_moves):
+                        print(f"{player_move} is already taken.")
+                    else:
+                        correct_input = False
+                correct_input = True
                 game.make_move(player_move, game.player1)
                 if (game.game_over() == True):
                     break
                 game.print_board()
-                player_move = int(input(f"{game.player2Name} position (0-8): "))
+                available_moves = game.available_moves()
+                while correct_input:
+                    player_move = int(input(f"{game.player2Name} position (0-8): "))
+                    if(player_move >= 9):
+                        print(f"{player_move} position does not exist.")
+                    elif(player_move not in available_moves):
+                        print(f"{player_move} is already taken.")
+                    else:
+                        correct_input = False
                 game.make_move(player_move, game.player2)
                 print()
             option = False
@@ -171,7 +189,16 @@ while continue_game:
             # Main game loop for option 2
             while not game.game_over():  
                 game.print_board()
-                player_move = int(input(f"{game.player1Name} position (0-8): "))
+                correct_input = True
+                available_moves = game.available_moves()
+                while correct_input:
+                    player_move = int(input(f"{game.player1Name} position (0-8): "))
+                    if(player_move >= 9):
+                        print(f"{player_move} position does not exist.")
+                    elif(player_move not in available_moves):
+                        print(f"{player_move} is already taken.")
+                    else:
+                        correct_input = False
                 game.make_move(player_move, game.player1)
                 game.play_ai()  
                 print()
@@ -182,8 +209,22 @@ while continue_game:
             game.player1 = 'X'
             game.player2Name = "AI-2"
             game.player2 = 'O'
-            first_position = int(input("\nPlease enter starting position for AI-1 (0-8): "))
-            second_position = int(input("Please enter starting position for AI-2 (0-8): "))
+            correct_input = True
+            while correct_input:
+                    first_position = int(input("\nPlease enter starting position for AI-1 (0-8): "))
+                    if(first_position >= 9):
+                        print(f"{first_position} position does not exist.")
+                    else:
+                        correct_input = False
+            correct_input = True
+            while correct_input:
+                    second_position = int(input("\nPlease enter starting position for AI-2 (0-8): "))
+                    if(second_position >= 9):
+                        print(f"{second_position} position does not exist.")
+                    elif(second_position == first_position):
+                        print(f"{second_position} is already taken.")
+                    else:
+                        correct_input = False
             print()
             game.make_move(first_position, game.player1)
             print(f"{game.player1Name} starts at position {first_position}")
@@ -210,7 +251,8 @@ while continue_game:
             option = False
         #see board positions
         elif (game_option == 4):
-            print("\n-----------")
+            print("\nBoard Positions:")
+            print("-----------")
             print(" " + "0" + " | " + "1" + " | " + "2")
             print("-----------")
             print(" " + "3" + " | " + "4" + " | " + "5")
@@ -231,7 +273,7 @@ while continue_game:
         print(f"{game.player1Name} wins!👑\n")
         print(f"{game.player2Name} lost!😔")
     elif game.winner(game.player2):
-        print(f"{game.player2Name} wins!👑")
+        print(f"{game.player2Name} wins!👑\n")
         print(f"{game.player1Name} lost!😔")
     else:
         print("It's a draw!") 
@@ -244,4 +286,4 @@ while continue_game:
     #reset the game for a new round
     game.board = [' ']*9 
     
-print("\nThank you for playing my TicTacToe Game!😊")
+print("\nThank you for playing my TicTacToe Game!😊\n")
