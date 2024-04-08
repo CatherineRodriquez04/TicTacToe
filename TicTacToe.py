@@ -75,9 +75,9 @@ class TicTacToe:
             #evaluates each move for best board state
             for move in game.available_moves():
                 if (game.ai == 1):
-                    game.make_move(move, game.player1)
-                else:
                     game.make_move(move, game.player2)
+                else:
+                    game.make_move(move, game.player1)
                 eval, _ = game.minimax_alpha_beta(depth - 1, alpha, beta, False)
                 game.undo_move(move)
                 if eval > max_eval:
@@ -108,19 +108,10 @@ class TicTacToe:
     def play_ai(game):
         _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
         print("AI plays at position:", best_move)
-        game.make_move(best_move, game.player2)
-    
-    #ai against ai
-    def play_ai1_strategy(game):
-        _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
-        print(f"{game.player1Name} plays at position:", best_move)
-        game.make_move(best_move, game.player1)
-
-    def play_ai2_strategy(game):
-        _, best_move = game.minimax_alpha_beta(len(game.available_moves()), float('-inf'), float('inf'), True)
-        print(f"{game.player2Name} plays at position:", best_move)
-        game.make_move(best_move, game.player2)
-        
+        if(game.ai == 1):
+            game.make_move(best_move, game.player1)
+        else:
+            game.make_move(best_move, game.player2)
         
 #creates a new instance of TicTacToe   
 game = TicTacToe()
@@ -135,15 +126,23 @@ while continue_game:
         #two player game
         if (game_option == 1):
             game.ai = 0 #placeholder
+            #prompt the player to input their name
             game.player1Name = input("Enter Player1 Name: ")
             game.player2Name = input("Enter Player2 Name: ")
-            player_choice = input(f"{game.player1Name} please choose X or O: ").upper()
-            if player_choice == 'X':
-                game.player1 = 'X'
-                game.player2 = 'O'
-            else:
-                game.player1 = 'O'
-                game.player2 = 'X'
+            #prompt the player to choose X or O
+            choose_symbol = True
+            while choose_symbol:
+                player_choice = input(f"{game.player1Name} please choose X or O: ").upper()
+                if player_choice == 'X':
+                    game.player1 = 'X'
+                    game.player2 = 'O'
+                    choose_symbol = False
+                elif player_choice == 'O':
+                    game.player1 = 'O'
+                    game.player2 = 'X'
+                    choose_symbol = False
+                else:
+                    print(f"{player_choice} is not an option")
             while not game.game_over():  
                 game.print_board()
                 correct_input = True
@@ -176,16 +175,23 @@ while continue_game:
         #game against ai
         elif (game_option == 2):
             game.ai = 0 #placeholder
+            #prompt th player to input their name
             game.player1Name = input("Enter Player Name: ")
             game.player2Name = "AI"
-            # Prompt the player to choose X or O
-            player_choice = input(f"{game.player1Name} please choose X or O: ").upper()
-            if player_choice == 'X':
-                game.player1 = 'X'
-                game.player2 = 'O'
-            else:
-                game.player1 = 'O'
-                game.player2 = 'X'
+            #prompt the player to choose X or O
+            choose_symbol = True
+            while choose_symbol:
+                player_choice = input(f"{game.player1Name} please choose X or O: ").upper()
+                if player_choice == 'X':
+                    game.player1 = 'X'
+                    game.player2 = 'O'
+                    choose_symbol = False
+                elif player_choice == 'O':
+                    game.player1 = 'O'
+                    game.player2 = 'X'
+                    choose_symbol = False
+                else:
+                    print(f"{player_choice} is not an option")
             # Main game loop for option 2
             while not game.game_over():  
                 game.print_board()
@@ -230,7 +236,7 @@ while continue_game:
             print(f"{game.player1Name} starts at position {first_position}")
             game.print_board()
             print()
-            time.sleep(1)
+            time.sleep(1) #delay between moves
             game.make_move(second_position, game.player2)
             print(f"{game.player2Name} starts at position {second_position}")
             game.print_board()
@@ -238,13 +244,13 @@ while continue_game:
             
             time.sleep(1)
             while not game.game_over():  
-                game.ai = 0 #placeholder
-                game.play_ai1_strategy()
+                game.ai = 1 #placeholder
+                game.play_ai()
                 game.print_board()
                 time.sleep(1) #delay between moves
                 if not game.game_over():
-                    game.ai = 1 #placeholder
-                    game.play_ai2_strategy()
+                    game.ai = 2 #placeholder
+                    game.play_ai()
                     game.print_board()
                     time.sleep(1) #delay between moves
                 print()
@@ -262,7 +268,7 @@ while continue_game:
             
         #invalid input for game options
         else:
-            print("Invalid input. PLease enter a mode option 1-4")
+            print("Invalid input. Please enter a mode option 1-4")
             
     #print the final state of the board
     print("End Result:")
