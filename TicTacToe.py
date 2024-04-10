@@ -2,6 +2,7 @@
 #Catherine Rodriquez and Shalvi Dalal
 
 import time
+
 class TicTacToe:
     def __init__(game):
         game.board = [' ']*9 #3x3 board
@@ -102,7 +103,6 @@ class TicTacToe:
                 if beta <= alpha:
                     break #alpha cutoff
             return min_eval, best_move
-        return 0, None
 
     #ai makes move based on minimax algorithm
     def play_ai(game):
@@ -116,7 +116,7 @@ class TicTacToe:
 #creates a new instance of TicTacToe   
 game = TicTacToe()
 print("\n❌⭕ Welcome to TicTacToe! ❌⭕")
-print("You can select between 3 game mode options\n\t1. Two Player\n\t2. Play Against Ai\n\t3. Ai Against Ai\n\t4. See Board Positions")
+print("You can select between 4 game mode options\n\t1. Two Player\n\t2. Play Against Ai\n\t3. Ai Against Ai\n\t4. See Board Positions")
 option = True
 continue_game = True
 while continue_game:
