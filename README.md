@@ -15,8 +15,14 @@ Choose the game mode and follow the prompts to play.
 - AI Against AI: Watch two AI players compete against each other.
 
 ## Instructions
-When playing against the AI, enter your move position when prompted.
-When watching AI against AI, sit back and enjoy the game!
+Setup:
+- Clone the respository to your own IDE that supports python.
+
+Game:
+- The objective is to place three marks (either ‘X’ or ‘O’) in a horizontal, vertical, or diagonal row on a 3x3 grid.
+- Two Player: Each opponent takes a turn placing their symbol
+- Against AI: Enter your move position when prompted. The AI's turn will follow after and display.
+- AI vs. AI: Choose the starting position for each AI, then sit back and enjoy the game!
 
 ## Credits
 This game was created by Catherine Rodriquez & Shalvi Dalal. 
